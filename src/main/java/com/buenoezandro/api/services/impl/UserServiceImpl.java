@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User findById(Integer id) {
-        var user = this.userRepository.findById(id);
-        return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
+        return this.userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado!"));
     }
 
     @Transactional(readOnly = true)
@@ -36,14 +36,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(UserDTO userDTO) {
-        this.findByEmail(userDTO);
+        this.findByEmailOrThrow(userDTO);
         return this.userRepository.save(this.modelMapper.map(userDTO, User.class));
     }
 
-    private void findByEmail(UserDTO userDTO) {
+    @Transactional
+    @Override
+    public User update(Integer id, UserDTO userDTO) {
+        userDTO.setId(id);
+        this.findByEmailOrThrow(userDTO);
+        return this.userRepository.save(this.modelMapper.map(userDTO, User.class));
+    }
+
+    private void findByEmailOrThrow(UserDTO userDTO) {
         var user = this.userRepository.findByEmail(userDTO.getEmail());
 
-        if (user.isPresent()) {
+        if (user.isPresent() && !user.get().getId().equals(userDTO.getId())) {
             throw new EmailAlreadyExistsException("E-mail já cadastrado no sistema!");
         }
     }

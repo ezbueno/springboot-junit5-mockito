@@ -20,7 +20,8 @@ public class UserResource {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(this.modelMapper.map(this.userService.findById(id), UserDTO.class));
+        return ResponseEntity.ok()
+                .body(this.modelMapper.map(this.userService.findById(id), UserDTO.class));
     }
 
     @GetMapping
@@ -35,5 +36,11 @@ public class UserResource {
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok()
+                .body(this.modelMapper.map(this.userService.update(id, userDTO), UserDTO.class));
     }
 }

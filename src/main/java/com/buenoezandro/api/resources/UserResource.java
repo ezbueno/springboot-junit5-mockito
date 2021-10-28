@@ -5,10 +5,8 @@ import com.buenoezandro.api.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -27,6 +25,15 @@ public class UserResource {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok().body(this.userService.findAll().stream().map(x -> this.modelMapper.map(x, UserDTO.class)).toList());
+        return ResponseEntity.ok().body(this.userService.findAll()
+                .stream().map(x -> this.modelMapper.map(x, UserDTO.class)).toList());
+    }
+
+    @PostMapping
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
+        var user = this.userService.create(userDTO);
+        var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }

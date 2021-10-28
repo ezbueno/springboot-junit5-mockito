@@ -4,6 +4,7 @@ import com.buenoezandro.api.domain.User;
 import com.buenoezandro.api.domain.dto.UserDTO;
 import com.buenoezandro.api.repositories.UserRepository;
 import com.buenoezandro.api.services.UserService;
+import com.buenoezandro.api.services.exceptions.EmailAlreadyExistsException;
 import com.buenoezandro.api.services.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -35,6 +36,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(UserDTO userDTO) {
+        this.findByEmail(userDTO);
         return this.userRepository.save(this.modelMapper.map(userDTO, User.class));
+    }
+
+    private void findByEmail(UserDTO userDTO) {
+        var user = this.userRepository.findByEmail(userDTO.getEmail());
+
+        if (user.isPresent()) {
+            throw new EmailAlreadyExistsException("E-mail já cadastrado no sistema!");
+        }
     }
 }

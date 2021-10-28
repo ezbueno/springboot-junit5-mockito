@@ -48,6 +48,13 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(this.modelMapper.map(userDTO, User.class));
     }
 
+    @Transactional
+    @Override
+    public void delete(Integer id) {
+        this.findById(id);
+        this.userRepository.deleteById(id);
+    }
+
     private void findByEmailOrThrow(UserDTO userDTO) {
         var user = this.userRepository.findByEmail(userDTO.getEmail());
 

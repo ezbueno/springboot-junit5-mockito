@@ -20,10 +20,10 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class UserServiceImplTest {
 
-    private static final Integer ID      = 1;
-    private static final String NAME     = "Ezandro";
-    private static final String EMAIL    = "ezandro@teste.com";
-    private static final String PASSWORD = "123";
+    private static final Integer ID            = 1;
+    private static final String NAME           = "Ezandro";
+    private static final String EMAIL          = "ezandro@teste.com";
+    private static final String PASSWORD       = "123";
     private static final String USER_NOT_FOUND = "Usuário não encontrado!";
 
     private UserServiceImpl userService;
@@ -60,7 +60,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void whenFindByIdThenReturnAnObjectNotFoundException() {
+    void whenFindByIdThenReturnAUserNotFoundException() {
         when(this.userRepository.findById(anyInt())).thenThrow(new UserNotFoundException(USER_NOT_FOUND));
 
         try {

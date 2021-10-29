@@ -3,6 +3,7 @@ package com.buenoezandro.api.services.impl;
 import com.buenoezandro.api.domain.User;
 import com.buenoezandro.api.domain.dto.UserDTO;
 import com.buenoezandro.api.repositories.UserRepository;
+import com.buenoezandro.api.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -23,6 +24,7 @@ class UserServiceImplTest {
     private static final String NAME     = "Ezandro";
     private static final String EMAIL    = "ezandro@teste.com";
     private static final String PASSWORD = "123";
+    private static final String USER_NOT_FOUND = "Usuário não encontrado!";
 
     private UserServiceImpl userService;
 
@@ -55,6 +57,18 @@ class UserServiceImplTest {
         assertEquals(ID, user.getId());
         assertEquals(NAME, user.getName());
         assertEquals(EMAIL, user.getEmail());
+    }
+
+    @Test
+    void whenFindByIdThenReturnAnObjectNotFoundException() {
+        when(this.userRepository.findById(anyInt())).thenThrow(new UserNotFoundException(USER_NOT_FOUND));
+
+        try {
+            this.userService.findById(ID);
+        } catch (Exception e) {
+            assertEquals(UserNotFoundException.class, e.getClass());
+            assertEquals(USER_NOT_FOUND, e.getMessage());
+        }
     }
 
     @Test

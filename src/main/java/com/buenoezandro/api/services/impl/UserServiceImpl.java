@@ -5,7 +5,7 @@ import com.buenoezandro.api.domain.dto.UserDTO;
 import com.buenoezandro.api.repositories.UserRepository;
 import com.buenoezandro.api.services.UserService;
 import com.buenoezandro.api.services.exceptions.EmailAlreadyExistsException;
-import com.buenoezandro.api.services.exceptions.ObjectNotFoundException;
+import com.buenoezandro.api.services.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Integer id) {
         return this.userRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado!"));
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado!"));
     }
 
     @Transactional(readOnly = true)

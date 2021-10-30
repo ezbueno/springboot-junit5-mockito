@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.when;
 class UserServiceImplTest {
 
     private static final Integer ID            = 1;
+    private static final Integer INDEX         = 0;
     private static final String NAME           = "Ezandro";
     private static final String EMAIL          = "ezandro@teste.com";
     private static final String PASSWORD       = "123";
@@ -72,7 +74,18 @@ class UserServiceImplTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllThenReturnAListOfUsers() {
+        when(this.userRepository.findAll()).thenReturn(List.of(this.user));
+
+        List<User> users = this.userService.findAll();
+
+        assertNotNull(users);
+        assertEquals(1, users.size());
+        assertEquals(User.class, users.get(INDEX).getClass());
+        assertEquals(ID, users.get(INDEX).getId());
+        assertEquals(NAME, users.get(INDEX).getName());
+        assertEquals(ID, users.get(INDEX).getId());
+        assertEquals(ID, users.get(INDEX).getId());
     }
 
     @Test

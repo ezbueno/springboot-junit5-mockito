@@ -156,6 +156,18 @@ class UserServiceImplTest {
         verify(this.userRepository, times(1)).deleteById(anyInt());
     }
 
+    @Test
+    void whenInvalidUserIdIsGivenThenAnExceptionShouldBeThrown() {
+        when(this.userRepository.findById(anyInt())).thenThrow(new UserNotFoundException(USER_NOT_FOUND));
+
+       try {
+           this.userService.delete(ID);
+       } catch (Exception e) {
+            assertEquals(UserNotFoundException.class, e.getClass());
+            assertEquals(USER_NOT_FOUND, e.getMessage());
+       }
+    }
+
     private void startUser() {
         this.user = new User(ID, NAME, EMAIL, PASSWORD);
         this.userDTO = new UserDTO(ID, NAME, EMAIL, PASSWORD);

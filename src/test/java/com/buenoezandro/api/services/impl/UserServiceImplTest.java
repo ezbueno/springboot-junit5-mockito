@@ -22,12 +22,13 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class UserServiceImplTest {
 
-    private static final Integer ID            = 1;
-    private static final Integer INDEX         = 0;
-    private static final String NAME           = "Ezandro";
-    private static final String EMAIL          = "ezandro@teste.com";
-    private static final String PASSWORD       = "123";
-    private static final String USER_NOT_FOUND = "Usuário não encontrado!";
+    private static final Integer ID                 = 1;
+    private static final Integer INDEX              = 0;
+    private static final String NAME                = "Ezandro";
+    private static final String EMAIL               = "ezandro@teste.com";
+    private static final String PASSWORD            = "123";
+    private static final String USER_NOT_FOUND      = "Usuário não encontrado!";
+    public static final String EMAIL_ALREADY_EXISTS = "E-mail já cadastrado no sistema!";
 
     private UserServiceImpl userService;
 
@@ -114,7 +115,7 @@ class UserServiceImplTest {
             }
         } catch (Exception e) {
             assertEquals(EmailAlreadyExistsException.class, e.getClass());
-            assertEquals("E-mail já cadastrado no sistema!", e.getMessage());
+            assertEquals(EMAIL_ALREADY_EXISTS, e.getMessage());
         }
     }
 
@@ -130,6 +131,21 @@ class UserServiceImplTest {
         assertEquals(NAME, user.getName());
         assertEquals(EMAIL, user.getEmail());
         assertEquals(PASSWORD, user.getPassword());
+    }
+
+    @Test
+    void whenUpdateThenThrowAnEmailAlreadyExistsException() {
+        when(this.userRepository.findByEmail(anyString())).thenReturn(this.optionalUser);
+
+        try {
+            if (this.optionalUser.isPresent()) {
+                this.optionalUser.get().setId(2);
+                this.userService.update(ID, this.userDTO);
+            }
+        } catch (Exception e) {
+            assertEquals(EmailAlreadyExistsException.class, e.getClass());
+            assertEquals(EMAIL_ALREADY_EXISTS, e.getMessage());
+        }
     }
 
     @Test

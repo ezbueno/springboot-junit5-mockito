@@ -119,7 +119,17 @@ class UserServiceImplTest {
     }
 
     @Test
-    void update() {
+    void whenUpdateThenReturnSuccess() {
+        when(this.userRepository.save(any())).thenReturn(this.user);
+
+        var user = this.userService.update(ID, this.userDTO);
+
+        assertNotNull(user);
+        assertEquals(User.class, user.getClass());
+        assertEquals(ID, user.getId());
+        assertEquals(NAME, user.getName());
+        assertEquals(EMAIL, user.getEmail());
+        assertEquals(PASSWORD, user.getPassword());
     }
 
     @Test

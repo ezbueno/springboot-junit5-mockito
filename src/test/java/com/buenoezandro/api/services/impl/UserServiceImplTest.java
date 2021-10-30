@@ -3,6 +3,7 @@ package com.buenoezandro.api.services.impl;
 import com.buenoezandro.api.domain.User;
 import com.buenoezandro.api.domain.dto.UserDTO;
 import com.buenoezandro.api.repositories.UserRepository;
+import com.buenoezandro.api.services.exceptions.EmailAlreadyExistsException;
 import com.buenoezandro.api.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -101,6 +101,21 @@ class UserServiceImplTest {
         assertEquals(NAME, user.getName());
         assertEquals(EMAIL, user.getEmail());
         assertEquals(PASSWORD, user.getPassword());
+    }
+
+    @Test
+    void whenCreateThenThrowAnEmailAlreadyExistsException() {
+        when(this.userRepository.findByEmail(anyString())).thenReturn(this.optionalUser);
+
+        try {
+            if (this.optionalUser.isPresent()) {
+                this.optionalUser.get().setId(2);
+                this.userService.create(this.userDTO);
+            }
+        } catch (Exception e) {
+            assertEquals(EmailAlreadyExistsException.class, e.getClass());
+            assertEquals("E-mail já cadastrado no sistema!", e.getMessage());
+        }
     }
 
     @Test

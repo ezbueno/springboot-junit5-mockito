@@ -17,7 +17,6 @@
 # VISÃO FUNCIONAL:
 * CRUD (CREATE, READ, UPDATE e DELETE) de um sistema  simples com testes de cobertura em 100% do projeto.
 
-
 # VISÃO TÉCNICA - BACK END:
 * Desenvolvimento de uma REST API, usando Java com Spring Boot 2.x.x, Spring Data JPA e banco de dados H2. 
 * Validação dos dados, tratamento de exceções, uso adequado do protocolo HTTP no padrão REST.

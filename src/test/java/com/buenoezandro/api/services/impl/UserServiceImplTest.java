@@ -22,13 +22,13 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class UserServiceImplTest {
 
-    private static final Integer ID                 = 1;
-    private static final Integer INDEX              = 0;
-    private static final String NAME                = "Ezandro";
-    private static final String EMAIL               = "ezandro@teste.com";
-    private static final String PASSWORD            = "123";
-    private static final String USER_NOT_FOUND      = "Usuário não encontrado!";
-    public static final String EMAIL_ALREADY_EXISTS = "E-mail já cadastrado no sistema!";
+    private static final Integer ID                  = 1;
+    private static final Integer INDEX               = 0;
+    private static final String NAME                 = "Ezandro";
+    private static final String EMAIL                = "ezandro@teste.com";
+    private static final String PASSWORD             = "123";
+    private static final String USER_NOT_FOUND       = "Usuário não encontrado!";
+    private static final String EMAIL_ALREADY_EXISTS = "E-mail já cadastrado no sistema!";
 
     private UserServiceImpl userService;
 

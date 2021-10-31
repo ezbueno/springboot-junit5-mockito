@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class ResourceExceptionHandler {
 
     @ExceptionHandler(value = UserNotFoundException.class)
-    public ResponseEntity<StandardError> objectNotFound(UserNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> userNotFound(UserNotFoundException e, HttpServletRequest request) {
         var error = new StandardError(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
